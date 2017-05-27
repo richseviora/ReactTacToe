@@ -132,10 +132,12 @@ __webpack_require__(0);
 var Square = (function (_super) {
     __extends(Square, _super);
     function Square() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.state = { value: null };
+        return _this;
     }
     Square.prototype.render = function () {
-        return (React.createElement("button", { className: "square" }));
+        return (React.createElement("button", { className: "square", onClick: function () { return alert('click'); } }, this.props.value));
     };
     return Square;
 }(React.Component));
@@ -145,7 +147,7 @@ var Board = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Board.prototype.renderSquare = function (i) {
-        return React.createElement(Square, null);
+        return React.createElement(Square, { value: i });
     };
     Board.prototype.render = function () {
         var status = 'Next player: X';

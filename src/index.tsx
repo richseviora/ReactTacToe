@@ -2,19 +2,27 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component<any, any> {
+interface ISquareProps {
+    value: number;
+}
+
+class Square extends React.Component<ISquareProps, any> {
+    constructor() {
+        super();
+        this.state = {value: null};
+    }
   render() {
     return (
-      <button className="square">
-        {/* TODO */}
+      <button className="square" onClick={() => alert('click')}>
+        {this.props.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component<any, any> {
-  renderSquare(i: any) {
-    return <Square />;
+  renderSquare(i: number) {
+    return <Square value={i}/>;
   }
 
   render() {
