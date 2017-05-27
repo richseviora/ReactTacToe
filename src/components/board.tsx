@@ -1,22 +1,20 @@
 import * as React from 'react';
 import * as Square from './square';
 
-export interface IBoardState {
-
-}
+export type IBoardState = string[];
 
 export interface IBoardProps {
     handleClick: (index: number) => void;
-    squares: string[];
+    squares: IBoardState;
 }
 
-export class Board extends React.Component<IBoardProps, IBoardState> {
+export class Board extends React.Component<IBoardProps, any> {
 
-    renderSquare(i: number) {
+    renderSquare(i: number): JSX.Element {
         return <Square.Square value={this.props.squares[i]} onClick={() => this.props.handleClick(i)} />;
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div>
                 <div className="board-row">

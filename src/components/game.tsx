@@ -24,7 +24,7 @@ export class Game extends React.Component<any, IGameState> {
         };
     }
 
-    public calculateWinner(squares: string[]) {
+    public calculateWinner(squares: Board.IBoardState) {
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
