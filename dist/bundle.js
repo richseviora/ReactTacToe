@@ -137,7 +137,8 @@ var Square = (function (_super) {
         return _this;
     }
     Square.prototype.render = function () {
-        return (React.createElement("button", { className: "square", onClick: function () { return alert('click'); } }, this.props.value));
+        var _this = this;
+        return (React.createElement("button", { className: "square", onClick: function () { return _this.setState({ value: 'X' }); } }, this.state.value));
     };
     return Square;
 }(React.Component));
