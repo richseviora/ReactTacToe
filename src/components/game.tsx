@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Square from './square';
 import * as Board from './board';
+import * as Redux from 'redux';
 
 interface IGameTurnState {
     squares: string[];
@@ -12,16 +13,25 @@ interface IGameState {
     stepNumber: number;
 }
 
+const INITIAL_STATE = {
+    xIsNext: true,
+    history: [
+        { squares: Array<string>(9) }
+    ],
+    stepNumber: 0
+}
+
+const appReducer: Redux.Reducer<IGameState> = (state: any, action: any) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+    return INITIAL_STATE;
+}
+
 export class Game extends React.Component<any, IGameState> {
     constructor() {
         super();
-        this.state = {
-            xIsNext: true,
-            history: [
-                { squares: Array<string>(9) }
-            ],
-            stepNumber: 0
-        };
+        this.state = INITIAL_STATE;
     }
 
     public calculateWinner(squares: Board.IBoardState) {

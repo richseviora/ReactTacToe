@@ -91,17 +91,24 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var Board = __webpack_require__(4);
+var INITIAL_STATE = {
+    xIsNext: true,
+    history: [
+        { squares: Array(9) }
+    ],
+    stepNumber: 0
+};
+var appReducer = function (state, action) {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+    return INITIAL_STATE;
+};
 var Game = (function (_super) {
     __extends(Game, _super);
     function Game() {
         var _this = _super.call(this) || this;
-        _this.state = {
-            xIsNext: true,
-            history: [
-                { squares: Array(9) }
-            ],
-            stepNumber: 0
-        };
+        _this.state = INITIAL_STATE;
         return _this;
     }
     Game.prototype.calculateWinner = function (squares) {

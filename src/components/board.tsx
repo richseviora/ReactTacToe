@@ -8,7 +8,7 @@ export interface IBoardProps {
     squares: IBoardState;
 }
 
-export class Board extends React.Component<IBoardProps, any> {
+export class Board extends React.Component<IBoardProps, null> {
 
     renderSquare(i: number): JSX.Element {
         return <Square.Square value={this.props.squares[i]} onClick={() => this.props.handleClick(i)} />;
