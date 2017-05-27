@@ -116,6 +116,23 @@ class Game extends React.Component<any, IGameState> {
         });
     }
 
+    public renderMoves(): JSX.Element[] {
+        return this.state.history.map((step, move) => {
+            const desc = move ?
+                'Move #' + move :
+                'Game start';
+            return (
+                <li>
+                    <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
+                </li>
+            );
+        });
+    }
+
+    public jumpTo(moveIndex: number): void {
+
+    }
+
     render() {
         const history = this.state.history;
         const current = history[history.length - 1];
@@ -133,8 +150,8 @@ class Game extends React.Component<any, IGameState> {
                     <Board squares={current.squares} handleClick={(i) => this.handleClick(i)} />
                 </div>
                 <div className="game-info">
-                    <div>{/* status */}</div>
-                    <ol>{/* TODO */}</ol>
+                    <div>{status}</div>
+                    <ol>{this.renderMoves()}</ol>
                 </div>
             </div>
         );

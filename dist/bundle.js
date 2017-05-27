@@ -214,6 +214,18 @@ var Game = (function (_super) {
             xIsNext: !this.state.xIsNext,
         });
     };
+    Game.prototype.renderMoves = function () {
+        var _this = this;
+        return this.state.history.map(function (step, move) {
+            var desc = move ?
+                'Move #' + move :
+                'Game start';
+            return (React.createElement("li", null,
+                React.createElement("a", { href: "#", onClick: function () { return _this.jumpTo(move); } }, desc)));
+        });
+    };
+    Game.prototype.jumpTo = function (moveIndex) {
+    };
     Game.prototype.render = function () {
         var _this = this;
         var history = this.state.history;
@@ -230,8 +242,8 @@ var Game = (function (_super) {
             React.createElement("div", { className: "game-board" },
                 React.createElement(Board, { squares: current.squares, handleClick: function (i) { return _this.handleClick(i); } })),
             React.createElement("div", { className: "game-info" },
-                React.createElement("div", null),
-                React.createElement("ol", null))));
+                React.createElement("div", null, status),
+                React.createElement("ol", null, this.renderMoves()))));
     };
     return Game;
 }(React.Component));
