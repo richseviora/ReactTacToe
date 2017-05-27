@@ -145,56 +145,14 @@ var Square = (function (_super) {
 var Board = (function (_super) {
     __extends(Board, _super);
     function Board() {
-        var _this = _super.call(this) || this;
-        var array = Array(9);
-        for (var index = 0; index < array.length; index++) {
-            array[index] = null;
-        }
-        _this.state = { squares: array, xIsNext: true };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Board.prototype.renderSquare = function (i) {
         var _this = this;
-        return React.createElement(Square, { value: this.state.squares[i], onClick: function () { return _this.handleClick(i); } });
-    };
-    Board.prototype.handleClick = function (i) {
-        var squares = this.state.squares.slice();
-        if (this.calculateWinner(squares) || squares[i]) {
-            return;
-        }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({ squares: squares, xIsNext: !this.state.xIsNext });
-    };
-    Board.prototype.calculateWinner = function (squares) {
-        var lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-        for (var i = 0; i < lines.length; i++) {
-            var _a = lines[i], a = _a[0], b = _a[1], c = _a[2];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
-            }
-        }
-        return null;
+        return React.createElement(Square, { value: this.props.squares[i], onClick: function () { return _this.props.handleClick(i); } });
     };
     Board.prototype.render = function () {
-        var winner = this.calculateWinner(this.state.squares);
-        var status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        }
-        else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        }
         return (React.createElement("div", null,
-            React.createElement("div", { className: "status" }, status),
             React.createElement("div", { className: "board-row" },
                 this.renderSquare(0),
                 this.renderSquare(1),
@@ -213,12 +171,64 @@ var Board = (function (_super) {
 var Game = (function (_super) {
     __extends(Game, _super);
     function Game() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.state = {
+            xIsNext: true,
+            history: [
+                { squares: Array(9) }
+            ]
+        };
+        return _this;
     }
+    Game.prototype.calculateWinner = function (squares) {
+        var lines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+        for (var i = 0; i < lines.length; i++) {
+            var _a = lines[i], a = _a[0], b = _a[1], c = _a[2];
+            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                return squares[a];
+            }
+        }
+        return null;
+    };
+    Game.prototype.handleClick = function (index) {
+        var history = this.state.history;
+        var current = this.state.history[history.length - 1];
+        var squares = current.squares.slice();
+        if (this.calculateWinner(squares) || squares[index]) {
+            return;
+        }
+        squares[index] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            history: history.concat([{
+                    squares: squares
+                }]),
+            xIsNext: !this.state.xIsNext,
+        });
+    };
     Game.prototype.render = function () {
+        var _this = this;
+        var history = this.state.history;
+        var current = history[history.length - 1];
+        var winner = this.calculateWinner(current.squares);
+        var status;
+        if (winner) {
+            status = 'Winner: ' + winner;
+        }
+        else {
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
         return (React.createElement("div", { className: "game" },
             React.createElement("div", { className: "game-board" },
-                React.createElement(Board, null)),
+                React.createElement(Board, { squares: current.squares, handleClick: function (i) { return _this.handleClick(i); } })),
             React.createElement("div", { className: "game-info" },
                 React.createElement("div", null),
                 React.createElement("ol", null))));
@@ -227,6 +237,7 @@ var Game = (function (_super) {
 }(React.Component));
 // ========================================
 ReactDOM.render(React.createElement(Game, null), document.getElementById('example'));
+"";
 
 
 /***/ }),
