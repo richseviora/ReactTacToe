@@ -150,7 +150,7 @@ var Board = (function (_super) {
         for (var index = 0; index < array.length; index++) {
             array[index] = null;
         }
-        _this.state = { squares: array };
+        _this.state = { squares: array, xIsNext: true };
         return _this;
     }
     Board.prototype.renderSquare = function (i) {
@@ -159,11 +159,11 @@ var Board = (function (_super) {
     };
     Board.prototype.handleClick = function (i) {
         var squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({ squares: squares });
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({ squares: squares, xIsNext: !this.state.xIsNext });
     };
     Board.prototype.render = function () {
-        var status = 'Next player: X';
+        var status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         return (React.createElement("div", null,
             React.createElement("div", { className: "status" }, status),
             React.createElement("div", { className: "board-row" },
