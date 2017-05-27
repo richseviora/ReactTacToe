@@ -1,2 +1,2 @@
 # ReactTacToe
-Hello world from 
+Let's give this a spin...
