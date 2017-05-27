@@ -7,7 +7,7 @@ interface IGameTurnState {
     squares: string[];
 }
 
-interface IGameState {
+export interface IGameState {
     xIsNext: boolean;
     history: IGameTurnState[];
     stepNumber: number;
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
     stepNumber: 0
 }
 
-const appReducer: Redux.Reducer<IGameState> = (state: any, action: any) => {
+export const appReducer: Redux.Reducer<IGameState> = (state: any, action: any) => {
     if (typeof state === 'undefined') {
         return INITIAL_STATE;
     }

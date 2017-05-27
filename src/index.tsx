@@ -5,10 +5,13 @@ import {createStore} from 'redux';
 import * as Game from './components/game';
 import './index.css';
 
+let store = createStore(Game.appReducer);
 
 // ========================================
 
 ReactDOM.render(
-    <Game.Game />,
+    <Provider store={store}>
+        <Game.Game/>
+    </Provider>,
     document.getElementById('example')
 );
