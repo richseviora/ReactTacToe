@@ -138,17 +138,29 @@ var Square = (function (_super) {
     }
     Square.prototype.render = function () {
         var _this = this;
-        return (React.createElement("button", { className: "square", onClick: function () { return _this.setState({ value: 'X' }); } }, this.state.value));
+        return (React.createElement("button", { className: "square", onClick: function () { return _this.props.onClick(); } }, this.props.value));
     };
     return Square;
 }(React.Component));
 var Board = (function (_super) {
     __extends(Board, _super);
     function Board() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        var array = Array(9);
+        for (var index = 0; index < array.length; index++) {
+            array[index] = null;
+        }
+        _this.state = { squares: array };
+        return _this;
     }
     Board.prototype.renderSquare = function (i) {
-        return React.createElement(Square, { value: i });
+        var _this = this;
+        return React.createElement(Square, { value: this.state.squares[i], onClick: function () { return _this.handleClick(i); } });
+    };
+    Board.prototype.handleClick = function (i) {
+        var squares = this.state.squares.slice();
+        squares[i] = 'X';
+        this.setState({ squares: squares });
     };
     Board.prototype.render = function () {
         var status = 'Next player: X';
