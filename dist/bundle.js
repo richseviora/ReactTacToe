@@ -159,6 +159,9 @@ var Board = (function (_super) {
     };
     Board.prototype.handleClick = function (i) {
         var squares = this.state.squares.slice();
+        if (this.calculateWinner(squares) || squares[i]) {
+            return;
+        }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({ squares: squares, xIsNext: !this.state.xIsNext });
     };
