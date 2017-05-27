@@ -37,7 +37,6 @@ class Board extends React.Component<IBoardProps, IBoardState> {
     }
 
     render() {
-
         return (
             <div>
                 <div className="board-row">
@@ -67,6 +66,7 @@ interface IGameTurnState {
 interface IGameState {
     xIsNext: boolean;
     history: IGameTurnState[];
+    stepNumber: number;
 }
 
 class Game extends React.Component<any, IGameState> {
@@ -76,7 +76,8 @@ class Game extends React.Component<any, IGameState> {
             xIsNext: true,
             history: [
                 { squares: Array<string>(9) }
-            ]
+            ],
+            stepNumber: 0
         };
     }
 
@@ -100,9 +101,16 @@ class Game extends React.Component<any, IGameState> {
         return null;
     }
 
-    public handleClick(index: number): void {
-        const history = this.state.history;
-        const current = this.state.history[history.length - 1];
+    private jumpToStep(moveNumber: number): void {
+        this.setState({
+            stepNumber: moveNumber,
+            xIsNext: (moveNumber % 2) ? false : true,
+        })
+    }
+
+    private handleClick(index: number): void {
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
         const squares = current.squares.slice();
         if (this.calculateWinner(squares) || squares[index]) {
             return;
@@ -112,6 +120,7 @@ class Game extends React.Component<any, IGameState> {
             history: history.concat([{
                 squares: squares
             }]),
+            stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
         });
     }
@@ -122,20 +131,16 @@ class Game extends React.Component<any, IGameState> {
                 'Move #' + move :
                 'Game start';
             return (
-                <li>
-                    <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
+                <li key={move}>
+                    <a href="#" onClick={() => this.jumpToStep(move)}>{desc}</a>
                 </li>
             );
         });
     }
 
-    public jumpTo(moveIndex: number): void {
-
-    }
-
     render() {
         const history = this.state.history;
-        const current = history[history.length - 1];
+        const current = history[this.state.stepNumber];
         const winner = this.calculateWinner(current.squares);
 
         let status;

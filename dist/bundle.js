@@ -176,7 +176,8 @@ var Game = (function (_super) {
             xIsNext: true,
             history: [
                 { squares: Array(9) }
-            ]
+            ],
+            stepNumber: 0
         };
         return _this;
     }
@@ -199,9 +200,15 @@ var Game = (function (_super) {
         }
         return null;
     };
+    Game.prototype.jumpToStep = function (moveNumber) {
+        this.setState({
+            stepNumber: moveNumber,
+            xIsNext: (moveNumber % 2) ? false : true,
+        });
+    };
     Game.prototype.handleClick = function (index) {
-        var history = this.state.history;
-        var current = this.state.history[history.length - 1];
+        var history = this.state.history.slice(0, this.state.stepNumber + 1);
+        var current = history[history.length - 1];
         var squares = current.squares.slice();
         if (this.calculateWinner(squares) || squares[index]) {
             return;
@@ -211,6 +218,7 @@ var Game = (function (_super) {
             history: history.concat([{
                     squares: squares
                 }]),
+            stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
         });
     };
@@ -220,16 +228,14 @@ var Game = (function (_super) {
             var desc = move ?
                 'Move #' + move :
                 'Game start';
-            return (React.createElement("li", null,
-                React.createElement("a", { href: "#", onClick: function () { return _this.jumpTo(move); } }, desc)));
+            return (React.createElement("li", { key: move },
+                React.createElement("a", { href: "#", onClick: function () { return _this.jumpToStep(move); } }, desc)));
         });
-    };
-    Game.prototype.jumpTo = function (moveIndex) {
     };
     Game.prototype.render = function () {
         var _this = this;
         var history = this.state.history;
-        var current = history[history.length - 1];
+        var current = history[this.state.stepNumber];
         var winner = this.calculateWinner(current.squares);
         var status;
         if (winner) {
