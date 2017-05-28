@@ -99,6 +99,7 @@ var INITIAL_STATE = {
     stepNumber: 0
 };
 exports.appReducer = function (state, action) {
+    console.log("appReducer", state, action);
     if (typeof state === 'undefined') {
         return INITIAL_STATE;
     }

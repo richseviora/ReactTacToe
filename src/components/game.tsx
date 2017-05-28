@@ -22,6 +22,7 @@ const INITIAL_STATE = {
 }
 
 export const appReducer: Redux.Reducer<IGameState> = (state: any, action: any) => {
+    console.log("appReducer", state, action);
     if (typeof state === 'undefined') {
         return INITIAL_STATE;
     }
